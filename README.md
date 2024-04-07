@@ -3,3 +3,5 @@
 - [Activate Windows 11 on Parallels](Activate-Windows-on-Parallels.md) (Tested)
 
 - [Install and Activate Office on Parallels Windows 11](Install-and-Activate-Office-on-Parallels-Windows.md) (Recomended) (Tested)
+
+- [Use XeLatex with VSCode on MACOS](Use-XeLatex-with-VSCode.md) (Tested)
