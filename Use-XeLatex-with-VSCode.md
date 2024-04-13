@@ -24,16 +24,106 @@
 
 6. Install 'LaTeX Workshop' extension.
 
-7. Go to the '.tex' file that you want to build as a pdf.
+7. Press 'Shift + command + P' in VSCode to run a command.
 
-8. Go to the 'LaTeX' extension in the 'Activity Bar'.
-
-9. Expand the Build LaTeX project option.
-
-10. Select the following option:
-
+8. Run the following command:
     ```
-    Recipe: latexmk (xelatex)
+    'Preferences: Open User Settings (JSON)'
     ```
 
-11. Maybe you would need to build two times the file in order to generate in the first execution some missing files like: .aux, .bbl, .fdb_latexmk, .fls, .gls.aux, .lof, .lot, .syntex.gz,
+9. Inside the opened file named 'settings.json' update the following entry in the dictionary:
+    
+    ```
+    "latex-workshop.latex.tools": 
+        ...
+        {
+            "name": "xelatexmk",
+            "command": "latexmk",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-xelatex",
+                "-outdir=%OUTDIR%",
+                "%DOC%"
+            ],
+            "env": {}
+        },
+        ...
+        {
+            "name": "bibtex",
+            "command": "bibtex",
+            "args": [
+                "%DOCFILE%"
+            ],
+            "env": {}
+        },
+        ...
+    ```
+
+    To become this:
+    
+    ```
+    "latex-workshop.latex.tools": 
+        ...
+        {
+            "name": "xelatex",
+            "command": "xelatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-xelatex",
+                "-outdir=%OUTDIR%",
+                "%DOC%"
+            ],
+            "env": {}
+        },
+        ...
+        {
+            "name": "bibtex",
+            "command": "bibtex",
+            "args": [
+                "%DOCFILE%"
+            ],
+            "env": {}
+        },
+        ...
+    ```
+
+10. Add this entry to the dictionary in order to have a recipe that follows the sequence to build correctly with xelatex:
+
+    ```
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "xelatex ➞ bibtex ➞ xelatex*2",
+            "tools": ["xelatex",
+                "bibtex",
+                "xelatex",
+                "xelatex"
+            ]
+        },
+        // other recipes...
+    ],
+    "latex-workshop.latex.recipe.default": "xelatex ➞ bibtex ➞ xelatex*2",
+    ```
+
+11. Add this entry to the dictionary to have a visual limit in line length to be used as a reference:
+   
+    ```
+    "editor.rulers": [80,120],
+    ```
+
+12. Go to the '.tex' file that you want to build as a pdf.
+
+13. Go to the 'LaTeX' extension in the 'Activity Bar'.
+
+14. Expand the Build LaTeX project option.
+
+15. Select the following option:
+
+    ```
+    Recipe: xelatex ➞ bibtex ➞ xelatex*2
+    ```
+
+16. If you have some build errors, they can be explained in the 'LaTeX Workshop' and 'LaTeX Compiler' in the Output tab or in the generated .log file with the same name as your built file.
